@@ -6,13 +6,6 @@ export enum ActionType {
   Delete = "DELETE",
 }
 
-export interface DocOperation {
-  preId: EventId;
-  id: EventId;
-  value: string;
-  execute(doc: Document): void;
-}
-
 export class Action {
   type: ActionType;
   preId: EventId;
@@ -44,46 +37,6 @@ export class Action {
   }
 
   private executeDelete(doc: Document) {
-    const preNode = doc.getNodeByIdMut(this.preId);
-    if (preNode) {
-      preNode.text.delete();
-    }
-  }
-}
-
-export class AddAction implements DocOperation {
-  preId: EventId;
-  id: EventId;
-  value: string;
-
-  constructor(preId: EventId, id: EventId, value: string) {
-    this.preId = preId;
-    this.id = id;
-    this.value = value;
-  }
-
-  execute(doc: Document) {
-    const preNode = doc.getNodeByIdMut(this.preId);
-    if (preNode) {
-      const text = new Text(this.preId, this.id, this.value);
-      const newNode = new DocNode(text);
-      preNode.addNode(newNode);
-    }
-  }
-}
-
-export class DeleteAction implements DocOperation {
-  preId: EventId;
-  id: EventId;
-  value: string;
-
-  constructor(preId: EventId, id: EventId, value: string) {
-    this.preId = preId;
-    this.id = id;
-    this.value = value;
-  }
-
-  execute(doc: Document) {
     const preNode = doc.getNodeByIdMut(this.preId);
     if (preNode) {
       preNode.text.delete();
