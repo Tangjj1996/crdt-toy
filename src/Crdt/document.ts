@@ -74,20 +74,14 @@ export class Document {
   }
 
   getNodeByIdMut(id: EventId): DocNode | undefined {
-    if (
-      this.root.text.id.timestamp === id.timestamp &&
-      this.root.text.id.clientId === id.clientId
-    ) {
+    if (this.root.text.id.equals(id)) {
       return this.root;
     } else {
       const q: DocNode[] = [this.root];
 
       while (q.length > 0) {
         const node = q.pop()!;
-        if (
-          node.text.id.timestamp === id.timestamp &&
-          node.text.id.clientId === id.clientId
-        ) {
+        if (node.text.id.equals(id)) {
           return node;
         }
         if (node.children.has(id)) {
