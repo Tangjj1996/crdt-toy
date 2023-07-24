@@ -55,10 +55,10 @@ export class Document {
 
   private getPreId(position: number): EventId {
     let pos = position;
-    const q: DocNode[] = [this.root];
+    const docNode: DocNode[] = [this.root];
 
-    while (q.length > 0) {
-      const node = q.pop()!;
+    while (docNode.length > 0) {
+      const node = docNode.pop()!;
       if (!node.text.isDeleted) {
         if (pos === 0) {
           return node.text.id;
@@ -66,7 +66,7 @@ export class Document {
         pos -= 1;
       }
       for (const child of node.children.values()) {
-        q.push(child);
+        docNode.push(child);
       }
     }
 
@@ -77,10 +77,10 @@ export class Document {
     if (this.root.text.id.equals(id)) {
       return this.root;
     } else {
-      const q: DocNode[] = [this.root];
+      const docNode: DocNode[] = [this.root];
 
-      while (q.length > 0) {
-        const node = q.pop()!;
+      while (docNode.length > 0) {
+        const node = docNode.pop()!;
         if (node.text.id.equals(id)) {
           return node;
         }
@@ -88,7 +88,7 @@ export class Document {
           return node.children.get(id)!;
         }
         for (const child of node.children.values()) {
-          q.push(child);
+          docNode.push(child);
         }
       }
       return undefined;
