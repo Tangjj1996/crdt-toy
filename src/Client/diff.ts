@@ -1,32 +1,32 @@
 import * as jsdiff from "diff";
 
 export const diff = (oldStr: string, newStr: string) => {
-  const parts = jsdiff.diffChars(oldStr, newStr);
+  const changes = jsdiff.diffChars(oldStr, newStr);
   let index = 0;
 
   const infoMap = new Map();
 
-  for (const p of parts) {
+  for (const change of changes) {
     let infos = infoMap.get(index);
 
-    if (p.added) {
+    if (change.added) {
       if (!infos) {
         infos = [];
         infoMap.set(index, infos);
       }
-      infos.push({ operat: "ADD", chars: p.value });
+      infos.push({ operat: "ADD", chars: change.value });
     }
 
-    if (p.removed) {
+    if (change.removed) {
       if (!infos) {
         infos = [];
         infoMap.set(index + 1, infos);
       }
-      infos.push({ operat: "DELETE", chars: p.value });
+      infos.push({ operat: "DELETE", chars: change.value });
     }
 
-    if (!p.removed) {
-      index += p.count as number;
+    if (!change.removed) {
+      index += change.count as number;
     }
   }
   let actions = [];
