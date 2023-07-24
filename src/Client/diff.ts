@@ -30,7 +30,7 @@ export const diff = (oldStr: string, newStr: string) => {
     }
   }
   let actions = [];
-  for (const [position, infos] of infoMap.entries()) {
+  for (const [position, infos] of infoMap) {
     actions.push({ position, infos });
   }
   actions = getActions(actions);
