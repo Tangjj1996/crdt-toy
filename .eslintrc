@@ -1,6 +1,13 @@
 {
   "extends": ["eslint-config-unjs"],
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "unicorn/no-null": "off",
+    "camelcase": "off",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/prefer-spread": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/no-negated-condition": "off",
+    "unicorn/prefer-number-properties": "off"
   }
 }
