@@ -15,6 +15,12 @@ let doc1: Document | null = null;
 let doc2: Document | null = null;
 let docAll: Document | null = null;
 
+enum ClientID {
+  FIRST = 1,
+  SECOND,
+  ALL,
+}
+
 const onSync = (clientId: number) => {
   switch (clientId) {
     case 1: {
@@ -33,19 +39,19 @@ const App = () => {
   const [finalText, setFinalText] = useState("");
 
   useEffect(() => {
-    doc1 = new Document(1);
-    doc2 = new Document(2);
-    docAll = new Document(3);
+    doc1 = new Document(ClientID.FIRST);
+    doc2 = new Document(ClientID.SECOND);
+    docAll = new Document(ClientID.ALL);
   }, []);
 
   const onActions = (clientId: number, actions: ActionBuilder[]) => {
     let doc: Document | null;
     switch (clientId) {
-      case 1: {
+      case ClientID.FIRST: {
         doc = doc1;
         break;
       }
-      case 2: {
+      case ClientID.SECOND: {
         doc = doc2;
         break;
       }
@@ -68,8 +74,16 @@ const App = () => {
         <Center>
           <VStack spacing="50">
             <HStack spacing="200" pt="100">
-              <Client clinedId={1} onSync={onSync} onActions={onActions} />
-              <Client clinedId={2} onSync={onSync} onActions={onActions} />
+              <Client
+                clinedId={ClientID.FIRST}
+                onSync={onSync}
+                onActions={onActions}
+              />
+              <Client
+                clinedId={ClientID.SECOND}
+                onSync={onSync}
+                onActions={onActions}
+              />
             </HStack>
             <Box w="100%">
               <Center>
