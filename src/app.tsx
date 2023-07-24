@@ -26,6 +26,7 @@ const onSync = (clientId: number) => {
       return doc2?.content();
     }
   }
+  return "";
 };
 
 const App = () => {
@@ -67,8 +68,8 @@ const App = () => {
         <Center>
           <VStack spacing="50">
             <HStack spacing="200" pt="100">
-              <Client />
-              <Client />
+              <Client clinedId={1} onSync={onSync} onActions={onActions} />
+              <Client clinedId={2} onSync={onSync} onActions={onActions} />
             </HStack>
             <Box w="100%">
               <Center>
