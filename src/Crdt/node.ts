@@ -49,17 +49,17 @@ export class DocNode {
     this.text = text;
   }
 
-  add_node(node: DocNode) {
+  addNode(node: DocNode) {
     if (!this.children.has(node.text.id)) {
       this.children.set(node.text.id, node);
     }
   }
 
-  has_node(id: EventId): boolean {
+  hasNode(id: EventId): boolean {
     return this.children.has(id);
   }
 
-  to_string(): string {
+  toString(): string {
     let s = "";
     if (!this.text.isDeleted) {
       s += this.text.text;
@@ -69,7 +69,7 @@ export class DocNode {
     for (const key of Array.from(this.children.keys()).sort((a, b) =>
       b.compare(a),
     )) {
-      s += this.children.get(key)!.to_string();
+      s += this.children.get(key)!.toString();
     }
     return s;
   }

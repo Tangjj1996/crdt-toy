@@ -11,15 +11,15 @@ export class Document {
     if (clientId === 0) {
       throw new Error("Client id must be greater than 0");
     }
-    const root_text = new Text(new EventId(0, 0), new EventId(0, 0), "");
-    this.root = new DocNode(root_text);
+    const rootText = new Text(new EventId(0, 0), new EventId(0, 0), "");
+    this.root = new DocNode(rootText);
     this.lamportManager = new LamportManager();
   }
 
   addActionBuilder(action: ActionBuilder) {
-    const pre_id = this.getPreId(action.position);
+    const preId = this.getPreId(action.position);
     const id = this.createId();
-    const actionObj = action.build(pre_id, id);
+    const actionObj = action.build(preId, id);
     this.addAction(actionObj);
   }
 

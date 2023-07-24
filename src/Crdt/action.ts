@@ -38,8 +38,8 @@ export class Action {
     const preNode = doc.getNodeByIdMut(this.preId);
     if (preNode) {
       const text = new Text(this.preId, this.id, this.value);
-      const new_node = new DocNode(text);
-      preNode.add_node(new_node);
+      const newNode = new DocNode(text);
+      preNode.addNode(newNode);
     }
   }
 
@@ -66,8 +66,8 @@ export class AddAction implements DocOperation {
     const preNode = doc.getNodeByIdMut(this.preId);
     if (preNode) {
       const text = new Text(this.preId, this.id, this.value);
-      const new_node = new DocNode(text);
-      preNode.add_node(new_node);
+      const newNode = new DocNode(text);
+      preNode.addNode(newNode);
     }
   }
 }

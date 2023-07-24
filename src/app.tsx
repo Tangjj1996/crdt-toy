@@ -8,18 +8,12 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { init, Document, Action } from "./Crdt";
+import { Document, ActionBuilder } from "./Crdt";
 import Client from "./Client";
 
 let doc1: Document | null = null;
 let doc2: Document | null = null;
 let docAll: Document | null = null;
-
-interface IAction {
-  position: number;
-  action: string;
-  char: string;
-}
 
 const onSync = (clientId: number) => {
   switch (clientId) {
@@ -38,16 +32,12 @@ const App = () => {
   const [finalText, setFinalText] = useState("");
 
   useEffect(() => {
-    async function initialize() {
-      await init();
-      doc1 = new Document(1);
-      doc2 = new Document(2);
-      docAll = new Document(3);
-    }
-    initialize();
+    doc1 = new Document(1);
+    doc2 = new Document(2);
+    docAll = new Document(3);
   }, []);
 
-  const onActions = (clientId: number, actions: IAction[]) => {
+  const onActions = (clientId: number, actions: ActionBuilder[]) => {
     let doc: Document | null;
     switch (clientId) {
       case 1: {
@@ -63,7 +53,9 @@ const App = () => {
       }
     }
     actions.forEach((action) => {
-      doc?.add_action(new Action(action.position, action.action, action.char));
+      doc?.addActionBuilder(
+        new ActionBuilder(action.position, action.action, action.char),
+      );
     });
     docAll?.merge(doc!);
     setFinalText(docAll?.content() || "");
