@@ -84,7 +84,7 @@ export class Document {
         if (node.text.id.equals(id)) {
           return node;
         }
-        if (node.children.has(id)) {
+        if (node.hasNode(id)) {
           return node.children.get(id)!;
         }
         for (const child of node.children.values()) {

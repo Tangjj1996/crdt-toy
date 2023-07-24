@@ -50,13 +50,18 @@ export class DocNode {
   }
 
   addNode(node: DocNode) {
-    if (!this.children.has(node.text.id)) {
+    if (!this.hasNode(node.text.id)) {
       this.children.set(node.text.id, node);
     }
   }
 
   hasNode(id: EventId): boolean {
-    return this.children.has(id);
+    for (const [eventId] of this.children) {
+      if (eventId.equals(id)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   toString(): string {
