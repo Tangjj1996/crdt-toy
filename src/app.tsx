@@ -23,11 +23,11 @@ enum ClientID {
 
 const onSync = (clientId: number) => {
   switch (clientId) {
-    case 1: {
+    case ClientID.FIRST: {
       doc1?.merge(doc2!);
       return doc1?.content();
     }
-    case 2: {
+    case ClientID.SECOND: {
       doc2?.merge(doc1!);
       return doc2?.content();
     }
