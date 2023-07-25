@@ -19,6 +19,9 @@ export class Action {
     this.value = value;
   }
 
+  /**
+   * 根据actionType执行不同方法
+   */
   execute(doc: Document) {
     if (this.type === ActionType.Add) {
       this.executeAdd(doc);
@@ -27,6 +30,10 @@ export class Action {
     }
   }
 
+  /**
+   * 1. 找到父节点
+   * 2. 在父节点下生成节点（多叉树的生成）
+   */
   private executeAdd(doc: Document) {
     const preNode = doc.getNodeByIdMut(this.preId);
     if (preNode) {
@@ -36,6 +43,10 @@ export class Action {
     }
   }
 
+  /**
+   * 标记该节点是「删除」
+   * 序列化忽略该节点
+   */
   private executeDelete(doc: Document) {
     const preNode = doc.getNodeByIdMut(this.preId);
     if (preNode) {
@@ -55,6 +66,9 @@ export class ActionBuilder {
     this.char = char;
   }
 
+  /**
+   * 创建一个action
+   */
   build(preId: EventId, id: EventId): Action {
     return new Action(this.action, preId, id, this.char);
   }

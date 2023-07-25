@@ -10,12 +10,20 @@ export class EventId {
     this.clientId = clientId;
   }
 
+  /**
+   * 浅比较
+   */
   equals(other: EventId): boolean {
     return (
       this.timestamp === other.timestamp && this.clientId === other.clientId
     );
   }
 
+  /**
+   * 定义规则：
+   * 1. Lamport Timestrap 越小越先执行
+   * 2. clientId 越大越先执行
+   */
   compare(other: EventId): number {
     if (this.timestamp === other.timestamp) {
       return this.clientId - other.clientId;
@@ -37,25 +45,38 @@ export class Text {
     this.isDeleted = isDeleted;
   }
 
+  /**
+   * 标识（墓碑机制）
+   */
   delete() {
     this.isDeleted = true;
   }
 }
 
 export class DocNode {
+  /**
+   * 多叉树子节点
+   */
   children: Map<EventId, DocNode> = new Map();
 
   constructor(public text: Text) {
     this.text = text;
   }
 
+  /**
+   * 生成多叉树
+   * 注意：生成时把节点放在Map里，遍历时再进行序列化
+   */
   addNode(node: DocNode) {
-    if (!this.hasNode(node.text.id)) {
+    if (!this.hasChildNode(node.text.id)) {
       this.children.set(node.text.id, node);
     }
   }
 
-  hasNode(id: EventId): boolean {
+  /**
+   * 子节点是否存在
+   */
+  hasChildNode(id: EventId): boolean {
     for (const [eventId] of this.children) {
       if (eventId.equals(id)) {
         return true;
@@ -64,6 +85,10 @@ export class DocNode {
     return false;
   }
 
+  /**
+   * 深度优先遍历多叉树
+   * compare方法确认序列化顺序
+   */
   toString(): string {
     let s = "";
     if (!this.text.isDeleted) {
