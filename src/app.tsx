@@ -21,6 +21,11 @@ enum ClientID {
   ALL,
 }
 
+/**
+ * 强制同步消息
+ * merge是根据actions生成多叉树
+ * content是序列化
+ */
 const onSync = (clientId: number) => {
   switch (clientId) {
     case ClientID.FIRST: {
@@ -44,6 +49,10 @@ const App = () => {
     docAll = new Document(ClientID.ALL);
   }, []);
 
+  /**
+   * 生成多叉树
+   * 注意：这时候的多叉树没有进行序列化，比如编辑器client1完全是一个受控的输入框，与多叉树无关
+   */
   const onActions = (clientId: number, actions: ActionBuilder[]) => {
     let doc: Document | null;
     switch (clientId) {
@@ -64,6 +73,7 @@ const App = () => {
         new ActionBuilder(action.position, action.action, action.char),
       );
     });
+    // 编辑器client3进行了序列化
     docAll?.merge(doc!);
     setFinalText(docAll?.content() || "");
   };

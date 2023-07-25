@@ -21,6 +21,7 @@ const Clinet: React.FC<IClientProps> = ({ clinedId, onSync, onActions }) => {
   const onChange = (e: any) => {
     if (!isSync) {
       const value = e.target.value;
+      // 生成actions
       const actions = diff(text, value);
       onActions(clinedId, actions);
       setText(value);

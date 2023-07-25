@@ -2,8 +2,10 @@ import * as jsdiff from "diff";
 
 export const diff = (oldStr: string, newStr: string) => {
   const changes = jsdiff.diffChars(oldStr, newStr);
+  // 当前字符在字符串中的位置
   let index = 0;
 
+  // 存储每个位置的差异信息
   const infoMap = new Map();
 
   for (const change of changes) {
@@ -12,6 +14,7 @@ export const diff = (oldStr: string, newStr: string) => {
     if (change.added) {
       if (!infos) {
         infos = [];
+        // 该位置的字符信息存入「infoMap」
         infoMap.set(index, infos);
       }
       infos.push({ operat: "ADD", chars: change.value });
@@ -20,12 +23,17 @@ export const diff = (oldStr: string, newStr: string) => {
     if (change.removed) {
       if (!infos) {
         infos = [];
+        /**
+         * 该位置字符的信息存入「infoMap」
+         * root的position为0，子节点需要从1开始
+         * */
         infoMap.set(index + 1, infos);
       }
       infos.push({ operat: "DELETE", chars: change.value });
     }
 
     if (!change.removed) {
+      // 这里就不需要 + 1了
       index += change.count as number;
     }
   }
@@ -33,6 +41,10 @@ export const diff = (oldStr: string, newStr: string) => {
   for (const [position, infos] of infoMap) {
     actions.push({ position, infos });
   }
+  /**
+   * 因为操作的最小单位是char，我们希望把[{ opeat: 'DELETE', chars: 'lo' }]这样的操作
+   * 拆分成[{ action: 'DELETE', char: 'o' }, { action: 'DELETE', char: 'l' }]
+   */
   actions = getActions(actions);
   return actions;
 };
