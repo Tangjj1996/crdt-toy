@@ -47,6 +47,9 @@ const App = () => {
     doc1 = new Document(ClientID.FIRST);
     doc2 = new Document(ClientID.SECOND);
     docAll = new Document(ClientID.ALL);
+    window.doc1 = doc1;
+    window.doc2 = doc2;
+    window.docAll = docAll;
   }, []);
 
   /**
