@@ -55,7 +55,7 @@ export class Text {
 
 export class DocNode {
   /**
-   * 多叉树子节点
+   * 树形结构子节点
    */
   children: Map<EventId, DocNode> = new Map();
 
@@ -64,7 +64,7 @@ export class DocNode {
   }
 
   /**
-   * 生成多叉树
+   * 生成树形结构
    * 注意：生成时把节点放在Map里，遍历时再进行序列化
    */
   addNode(node: DocNode) {
@@ -86,7 +86,7 @@ export class DocNode {
   }
 
   /**
-   * 深度优先遍历多叉树
+   * 深度优先遍历树形结构
    * compare方法确认序列化顺序
    */
   toString(): string {

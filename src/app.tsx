@@ -23,7 +23,7 @@ enum ClientID {
 
 /**
  * 强制同步消息
- * merge是根据actions生成多叉树
+ * merge是根据actions生成树形结构
  * content是序列化
  */
 const onSync = (clientId: number) => {
@@ -50,8 +50,8 @@ const App = () => {
   }, []);
 
   /**
-   * 生成多叉树
-   * 注意：这时候的多叉树没有进行序列化，比如编辑器client1完全是一个受控的输入框，与多叉树无关
+   * 生成树形结构
+   * 注意：这时候的树形结构没有进行序列化，比如编辑器client1完全是一个受控的输入框，与树形结构无关
    */
   const onActions = (clientId: number, actions: ActionBuilder[]) => {
     let doc: Document | null;

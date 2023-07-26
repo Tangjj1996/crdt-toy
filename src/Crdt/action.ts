@@ -32,7 +32,7 @@ export class Action {
 
   /**
    * 1. 找到父节点
-   * 2. 在父节点下生成节点（多叉树的生成）
+   * 2. 在父节点下生成节点（树形结构的生成）
    */
   private executeAdd(doc: Document) {
     const preNode = doc.getNodeByIdMut(this.preId);
