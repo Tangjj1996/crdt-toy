@@ -52,7 +52,7 @@ export class Document {
 
   /**
    * 从root开始
-   * 广度优先
+   * 深度优先
    * 根据EventId compare方法序列化遍历
    */
   content() {
@@ -91,7 +91,7 @@ export class Document {
   }
 
   /**
-   * 根据位置，广度优先遍历
+   * 根据位置，深度优先遍历
    * 拿到preId
    */
   private getPreId(position: number): EventId {
