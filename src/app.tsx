@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 import { Document, ActionBuilder } from "./Crdt";
-import { asyncWebsocket } from "./store/async-websocket";
+import { asyncWebsocket } from "./Store/async-websocket";
 import Client from "./Client";
 
 let doc1: Document | null = null;
