@@ -35,6 +35,7 @@
     "@emotion/styled": "^11.11.0",
     "diff": "^5.1.0",
     "framer-motion": "^10.13.0",
+    "jotai": "^2.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

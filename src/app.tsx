@@ -8,7 +8,9 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
+import { useAtomValue } from "jotai";
 import { Document, ActionBuilder } from "./Crdt";
+import { asyncWebsocket } from "./store/async-websocket";
 import Client from "./Client";
 
 let doc1: Document | null = null;
@@ -42,6 +44,7 @@ const onSync = (clientId: number) => {
 
 const App = () => {
   const [finalText, setFinalText] = useState("");
+  const websocket = useAtomValue(asyncWebsocket);
 
   useEffect(() => {
     doc1 = new Document(ClientID.FIRST);
