@@ -4,72 +4,46 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 )
 
-var db = make(map[string]string)
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
-func setupRouter() *gin.Engine {
-	// Disable Console Color
-	// gin.DisableConsoleColor
-	r := gin.Default()
+func hanldeWebSocket(c *gin.Context) {
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	// Pint test
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "pong")
-	})
+	defer conn.Close()
 
-	// Get user value
-	r.GET("/user/:name", func(ctx *gin.Context) {
-		user := ctx.Params.ByName("name")
-		value, ok := db[user]
+	for {
+		_, msg, err := conn.ReadMessage()
 
-		if ok {
-			ctx.JSON(http.StatusOK, gin.H{"user": user, "value": value})
-		} else {
-			ctx.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
-		}
-	})
-
-	// Authorized group (uses gin.BasicAuth() middleware)
-	// Same than:
-	// authorized := r.Group("/")
-	// authorized.Use(gin.BasicAuth(gin.Credentials{
-	//   "foo": "bar",
-	//   "manu": "123"
-	//}))
-	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
-		"foo":  "bar", // user:foo password:bar
-		"manu": "123", // user:name password:123
-	}))
-
-	/** example curl for /admin with basicauth header
-	xfsafafa== is base64("foo:bar")
-			curl -X POST \
-			http://localhost:8000/admin \
-			-H 'authorization: Basic xfsafafa==' \
-			-H 'content-type: application/json' \
-			-d '{"value": "bar"}'
-
-	*/
-	authorized.POST("admin", func(ctx *gin.Context) {
-		user := ctx.MustGet(gin.AuthUserKey).(string)
-
-		// Parse Json
-		var json struct {
-			Value string `json:"value" binding:"required"`
+		if err != nil {
+			break
 		}
 
-		if ctx.Bind(&json) == nil {
-			db[user] = json.Value
-			ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
-		}
-	})
+		println("Receive message: ", string(msg))
 
-	return r
+		err = conn.WriteMessage(websocket.TextMessage, msg)
+		if err != nil {
+			break
+		}
+	}
 }
 
 func main() {
-	r := setupRouter()
-	// Listen and server in localhost:8080
-	r.Run(":8080")
+	r := gin.Default()
+
+	r.GET("/websocket", hanldeWebSocket)
+
+	if err := r.Run(":8888"); err != nil {
+		panic(err)
+	}
 }
