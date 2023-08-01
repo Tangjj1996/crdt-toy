@@ -86,7 +86,7 @@ export class DocNode {
   }
 
   /**
-   * 深度优先遍历树形结构
+   * 广度优先遍历树形结构
    * compare方法确认序列化顺序
    */
   toString(): string {
