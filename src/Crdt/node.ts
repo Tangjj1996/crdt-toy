@@ -21,7 +21,7 @@ export class EventId {
 
   /**
    * 定义规则：
-   * 1. Lamport Timestrap 越小越先执行
+   * 1. Lamport Timestrap 越大越先执行
    * 2. clientId 越大越先执行
    */
   compare(other: EventId): number {
